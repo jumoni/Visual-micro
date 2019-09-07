@@ -21,24 +21,7 @@
     {#        name: '2013',#}
     {#        data: [0, 150]}#}
     {#    ]#}
-    Highcharts.chart('container', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Historical US Population by State'
-        },
-        xAxis: {
-            categories: {{ states|safe }}
-        },
-        series: [
-            {% for entry in data_set %}
-            {
-            name: '{{ entry.year }}',
-            data: [{% for data in data_set %}{% if data.year == entry.year %}{{ entry.population }}{% else %}{{ 0 }}{% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}]
-            }{% if not forloop.last %}, {% endif %}
-            {% endfor %}]
-    });
+    Highcharts.chart('container', {{ chart|safe }});
   </script>
 
 <div class='row'>
