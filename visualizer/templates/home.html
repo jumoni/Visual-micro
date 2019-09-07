@@ -4,6 +4,23 @@
   <div id="container" class="center"></div>
   <script src="https://code.highcharts.com/highcharts.src.js"></script>
   <script>
+    {#  Highcharts.chart('container', {#}
+    {#    chart: {#}
+    {#        type: 'column'#}
+    {#    },#}
+    {#    title: {#}
+    {#        text: 'Historical US Population by State'#}
+    {#    },#}
+    {#    xAxis: {#}
+    {#        categories: ["PA", "NJ"]#}
+    {#    },#}
+    {#    series: [{#}
+    {#        name: '2012',#}
+    {#        data: [125, 0]},#}
+    {#        {#}
+    {#        name: '2013',#}
+    {#        data: [0, 150]}#}
+    {#    ]#}
     Highcharts.chart('container', {
         chart: {
             type: 'column'
@@ -12,31 +29,15 @@
             text: 'Historical US Population by State'
         },
         xAxis: {
-            categories: [
-            {% for entry in data_set %}
-                '{{ entry.state }}'{% if not forloop.last %}, {% endif %}
-            {% endfor %}
-            ]
+            categories: {{ states|safe }}
         },
-        series: [{
-            name: 'Year 2012',
-            data: [
-                {% for entry in data_set %}
-                    {% if entry.year == 2012 %}
-                        {{ entry.population }}
-                    {% endif %}
-                    {% if not forloop.last %}, {% endif %}
-                {% endfor %}]
-        }, {
-            name: 'Year 2013',
-            data: [
-                {% for entry in data_set %}
-                    {% if entry.year == 2013 %}
-                        {{ entry.population }}
-                    {% endif %}
-                    {% if not forloop.last %}, {% endif %}
-                {% endfor %}]
-        }]
+        series: [
+            {% for entry in data_set %}
+            {
+            name: '{{ entry.year }}',
+            data: [{% for data in data_set %}{% if data.year == entry.year %}{{ entry.population }}{% else %}{{ 0 }}{% endif %}{% if not forloop.last %}, {% endif %}{% endfor %}]
+            }{% if not forloop.last %}, {% endif %}
+            {% endfor %}]
     });
   </script>
 

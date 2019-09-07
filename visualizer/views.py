@@ -18,8 +18,16 @@ class HomeView(View):
         context = {}
         context['data_form'] = DataForm()
         context['customers'] = 10
-        context['data_set'] = Data.objects.all()
-        print(context['data_set'])
+        data_set = Data.objects.all()
+        states = list()
+        for data in data_set:
+            if data.state not in states:
+                states.append('%s' % data.state)
+
+        print(states)
+
+        context['states'] = json.dumps(states)
+        context['data_set'] = data_set
         return render(request, 'home.html', context)
 
 
