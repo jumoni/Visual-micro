@@ -9,24 +9,25 @@
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
             crossorigin="anonymous"></script>
+        <script src="https://code.highcharts.com/highcharts.src.js"></script>
 		<title>Visual Micro</title>
 	</head>
 
 	<body>
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
 			<span class="navbar-brand" id = "id_name_of_site">Visual Micro</span>
-			<div class="navbar-nav mr-md-2">
-				{% block user-info %}
-				{% endblock %}
-			</div>
 		</nav>
 		<main role="main" class="container">
-			<div class="jumbotron">
-				<div class="text-center">
-				    {% block content %}
-				    {% endblock %}
-				</div>
-			</div>
+          <div id="container" class="center"></div>
+          <script>
+            Highcharts.chart('container', {{ chart|safe }});
+          </script>
+            <div class="jumbotron">
+                <div class="text-center">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
         </main>
         {% block js %}
 		{% endblock %}
