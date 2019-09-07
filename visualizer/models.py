@@ -6,6 +6,14 @@ class Data(models.Model):
     state = models.CharField(max_length=20, blank=True)
     population = models.IntegerField()
 
+    def __unicode__(self):
+        return {
+            'id': self.id,
+            'year': self.year,
+            'state': self.state,
+            'population': self.population
+        }
+
     def dump(self):
         return {
             'id': self.id,
