@@ -1,29 +1,60 @@
-<!doctype html>
-<html>
-	<head>
-	    <meta charset="utf-8">
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-		<title>Visualizer</title>
-	</head>
+{% extends 'base.html' %}
 
-	<body>
-		<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-			<span class="navbar-brand" id = "id_name_of_site">Visual Micro</span>
-			<div class="navbar-nav mr-md-2">
-				{% block user-info %}
-				{% endblock %}
-			</div>
-		</nav>
-		<main role="main" class="container">
-			<div class="jumbotron">
-				<div class="text-center">
-				    {% block content %}
-				    {% endblock %}
-				</div>
-			</div>
-        </main>
-        {% block js %}
-		{% endblock %}
-    </body>
-</html>
+{% block content %}
+
+  <div id="container"></div>
+  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+  <script>
+    Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Historical US Population by State'
+        },
+        xAxis: {
+            categories: [
+            {% for entry in data_set %}
+                {{ entry.state }}
+            {% endfor %}
+            ]
+        },
+        series: [{
+            name: 'Year 2012',
+            data: [107, 31,2,4,5,6]
+        }, {
+            name: 'Year 1900',
+            data: [133, 156,67,23,4,6]
+        }, {
+            name: 'Year 2012',
+            data: [1052, 954, 45,3,4,1]
+        }]
+        {#    series: [{#}
+        {#    {% for entry in data_set %}#}
+        {#        name: {{ entry.year }},#}
+        {#        data: [{{ entry.population }}]#}
+        {#    {% endfor %}#}
+    });
+  </script>
+
+<div class='row'>
+    <div class="new_post">
+        <form method="post" action="{% url 'add-data' %}">
+        <table>
+            {% for field in data_form.visible_fields %}
+                <tr>
+                    <td>{{field.label_tag}}</td>
+                    <td>{{field}}</td>
+                    <td class="error">
+                        {% for error in field.errors %} {{error}} {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr><td colspan="3"><input id="id_post_button" type="submit" value="Submit"></td></tr>
+        </table>
+            {% csrf_token %}
+        </form>
+    </div>
+</div>
+
+{% endblock %}
