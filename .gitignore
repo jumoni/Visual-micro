@@ -1,0 +1,4 @@
+*.pyc
+db.splite3
+.DS_Store
+migrations
