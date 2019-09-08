@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{#<meta http-equiv="refresh" content="30">#}
+<div class="jumbotron">
+    <div class="text-center">
+        <form method="post" action="{% url 'new-data' %}">
+            {% for field in data_form.visible_fields %}
+                <div class="form-group row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-2">
+                        <label for="state">
+                            {{field.label_tag}}
+                        </label>
+                    </div>
+                    <div class="col-md-2">{{field}}</div>
+                    <div class="col-md-4 error">
+                        {% for error in field.errors %} {{error}} {% endfor %}
+                    </div>
+                </div>
+	        {% endfor %}
+            <div class="form-group row">
+                <div class="col-md-5"></div>
+                <div class="col-md-2">
+                    <input type="submit" class="form-control" value="Submit"></td>
+                </div>
+                <div class="col-md-5"></div>
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+</div>
+
+<dive class="row link">
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+    <a href="{% url 'home' %}" class="btn btn-info">Back to diagram</a>
+    </div>
+</dive>
+
+{% endblock %}
